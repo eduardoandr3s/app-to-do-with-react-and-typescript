@@ -1,14 +1,20 @@
-import { FOOTER_FILTERS_BUTTONS } from "../consts"
+import { FOOTER_FILTERS_BUTTONS, TODO_FILTERS } from "../consts"
 import { type FilterValue } from "../types"
 
 interface Props {
-    onFilterChange: (filter: FilterValue) => void
-    filterSelected: FilterValue
+    handleFilterChange: (filter: FilterValue) => void
+    filterSelected: typeof TODO_FILTERS[keyof typeof TODO_FILTERS]
 }
 
 export const Filters: React.FC<Props> = (
-    {filterSelected, onFilterChange}
+    {filterSelected, handleFilterChange}
 ) => {
+
+    const handleClick = (filter: FilterValue) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        handleFilterChange(filter)
+      }
+
    return (
     <ul className="filters">
         {
@@ -19,10 +25,7 @@ export const Filters: React.FC<Props> = (
                     <li key={key}>
                         <a href={href}
                         className={className}
-                        onClick={(event) => {
-                            event.preventDefault()
-                            onFilterChange(key as FilterValue)
-                        }}
+                        onClick={handleClick(key as FilterValue)}
                         >
                             {literal}
                         </a>
